@@ -18,7 +18,7 @@ class Listener(jda: ⇒ JDA) extends EventListener {
   private val NAT_20_STRING: String = " (NATURAL 20!)"
   private val NAT_1_STRING: String = " (NATURAL 1)"
   private val NAT_BOTH_STRING: String = " (NAT 1 AND 20!)"
-  private val R_DICE = raw"((\d+)\s*d(\d+)(?:\s*\+\s*(\d+))?)".r
+  private val R_DICE = raw"((\d+)\s*d(\d+)(?:\s*([\+-]\s*\d+))?)".r
 
   @tailrec
   private def rollDie(count: Int, die: Int, mod: Int, rolls: List[Int] = Nil, sum: Int = 0): RollResult =
@@ -38,14 +38,17 @@ class Listener(jda: ⇒ JDA) extends EventListener {
         case R_DICE(roll, c, d, m) ⇒ {
           val count = c.toInt
           val die = d.toInt
-          val mod = Option(m).getOrElse("0").toInt
+          val mod = Option(m).map(_.filterNot(_.isWhitespace)).getOrElse("0").toInt
 
           val result = rollDie(count, die, mod)
 
           val rollDisplays = result.rolls.map(_.toString).reduce(_ + "+" + _)
-          val modDisplay = if (result.mod == 0) "" else s"+${result.mod}"
+          val modDisplay =
+            if (result.mod == 0) ""
+            else if (result.mod > 0) s"+${result.mod}"
+            else result.mod.toString
 
-          val rollResult =s"$rollDisplays$modDisplay=${result.total}"
+          val rollResult = s"$rollDisplays$modDisplay=${result.total}"
 
           val natAlert =
             if (die != 20) ""
