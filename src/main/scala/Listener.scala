@@ -44,9 +44,9 @@ class Listener(jda: ⇒ JDA) extends EventListener {
 
           val rollDisplays = result.rolls.map(_.toString).reduce(_ + "+" + _)
           val modDisplay = if (result.mod == 0) "" else s"+${result.mod}"
-          val rollResult =
-            if (result.rolls.length == 1) result.total.toString
-            else s"$rollDisplays$modDisplay=${result.total}"
+
+          val rollResult =s"$rollDisplays$modDisplay=${result.total}"
+
           val natAlert =
             if (die != 20) ""
             else if (result.rolls.contains(20) && result.rolls.contains(1)) NAT_BOTH_STRING
