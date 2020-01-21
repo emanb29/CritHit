@@ -70,3 +70,5 @@ fabric.properties
 .idea/httpRequests
 
 .env
+.metals/
+null
