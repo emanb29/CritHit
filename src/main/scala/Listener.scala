@@ -18,7 +18,7 @@ class Listener(jda: ⇒ JDA) extends EventListener {
   private val NAT_20_STRING: String = " (NATURAL 20!)"
   private val NAT_1_STRING: String = " (NATURAL 1)"
   private val NAT_BOTH_STRING: String = " (NAT 1 AND 20!)"
-  private val R_DICE = raw"(?:^|\s)((\d+)\s*d(\d+)(?:\s*([\+-]\s*\d+))?)".r
+  private val R_DICE = raw"(?:^|\W|_)((\d+)\s*d(\d+)(?:\s*([\+-]\s*\d+))?)".r
 
   @tailrec
   private def rollDie(count: Int, die: Int, mod: Int, rolls: List[Int] = Nil, sum: Int = 0): RollResult =
